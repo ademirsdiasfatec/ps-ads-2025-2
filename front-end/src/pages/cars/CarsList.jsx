@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
+import fetchAuth from '../../lib/fetchAuth'
 
 import { feedbackWait, feedbackConfirm, feedbackNotify } from '../../ui/Feedback'
 
@@ -111,8 +112,8 @@ export default function CarsList() {
   async function loadData() {
     feedbackWait(true)
     try {
-      const response = await fetch(import.meta.env.VITE_API_BASE + '/cars')
-      const data = await response.json()
+      const data = await fetchAuth.get('/cars')
+      /*const data = await response.json()*/
 
       // Atualiza a variável de estado com os dados obtidos
       setState({ ...state, cars: data })
@@ -136,9 +137,9 @@ export default function CarsList() {
       feedbackWait(true)
       try {
         // Envia a requisição para a exclusão do registro
-        await fetch(import.meta.env.VITE_API_BASE + `/cars/${id}`,
-          { method: 'DELETE' }
-        )
+        await fetchAuth.delete(`/cars/${id}`),
+         /* { method: 'DELETE' } */
+       
         // Atualiza os dados do datagrid
         loadData()
         feedbackNotify('Exclusão efetuada com sucesso.')
